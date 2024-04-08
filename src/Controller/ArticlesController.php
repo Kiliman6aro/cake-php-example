@@ -6,7 +6,10 @@ use App\Controller\AppController;
 
 class ArticlesController extends AppController
 {
-    #[\Override] public function initialize(): void
+    /**
+     * @throws \Exception
+     */
+    public function initialize(): void
     {
         $this->loadComponent('Paginator');
         $this->loadComponent('Flash');
@@ -57,5 +60,15 @@ class ArticlesController extends AppController
             $this->Flash->error(__('Unable to update your article.'));
         }
         $this->set('article', $article);
+    }
+
+    public function delete(string $slug = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $article = $this->Articles->findBySlug($slug)->firstOrFail();
+        if($this->Articles->delete($article)){
+            $this->Flash->success(__('The {0} article has been deleted.', $article->title));
+            return $this->redirect(['action' => 'index']);
+        }
     }
 }
