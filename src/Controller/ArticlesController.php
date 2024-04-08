@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
-use App\Controller\AppController;
+use App\Model\Table\ArticlesTable;
 
+/**
+ * @property ArticlesTable Articles
+ */
 class ArticlesController extends AppController
 {
     /**
@@ -28,7 +31,7 @@ class ArticlesController extends AppController
 
     public function view(string $slug = null)
     {
-        $article = $this->Articles->findBySlug($slug)->firstOrFail();
+        $article = $this->Articles->findBySlug($slug)->contain('Tags')->firstOrFail();
         $this->set(compact('article'));
     }
 
@@ -51,7 +54,7 @@ class ArticlesController extends AppController
 
     public function edit(string $slug = null)
     {
-        $article = $this->Articles->findBySlug($slug)->firstOrFail();
+        $article = $this->Articles->findBySlug($slug)->contain('Tags')->firstOrFail();
         if($this->request->is(['post', 'put'])){
             $this->Articles->patchEntity($article, $this->request->getData());
             $article->user_id = 1;

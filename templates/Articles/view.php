@@ -1,3 +1,6 @@
+<?php
+/** @var \App\Model\Entity\Article $article */
+?>
 
 <h1><?= h($article->title) ?></h1>
 <p><?= h($article->body) ?></p>
@@ -6,4 +9,7 @@
 </p>
 <p>
     <?= $this->Html->link('Edit', ['action' => 'edit', $article->slug]) ?>
+</p>
+<p>
+    <b>Tags:</b> <?= h($article->tag_string) ?>
 </p>
